@@ -7,6 +7,7 @@ def check_profile(name, os):
     wifi_profile = {}
     wifi_profile["ssid"] = name
 
+    #Windows systems
     if os == 'nt':
         profile_info = subprocess.run(["netsh", "wlan", "show", "profiles", name], capture_output = True).stdout.decode()
         if not re.search("Security key           : Absent", profile_info):
@@ -18,7 +19,8 @@ def check_profile(name, os):
             
             # only return if there's data
             return wifi_profile
-        
+    
+    #Linux systems
     elif os == 'posix':
         profile_info = subprocess.run(["sudo", "cat", "/etc/NetworkManager/system-connections/"+name], capture_output=True).stdout.decode()
         if re.search("psk=", profile_info):
