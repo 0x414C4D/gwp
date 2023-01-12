@@ -30,7 +30,7 @@ def check_profile(name, os):
             # only return if there's data
             return wifi_profile
 
-
+#Windows systems
 if os.name == 'nt':
     command_out = subprocess.run(["netsh", "wlan", "show", "profiles"], capture_output = True).stdout.decode()
     profile_names = (re.findall("All User Profile     : (.*)\r", command_out))
@@ -43,6 +43,7 @@ if os.name == 'nt':
     header["domain"] = re.findall("Domain:                    (.*)\r", systeminfo)[0]
     print(header)
 
+#Linux systems
 elif os.name == 'posix':
     command_out = subprocess.run(["ls", "/etc/NetworkManager/system-connections/"], capture_output = True).stdout.decode()
     profile_names = command_out.split("\n")
